@@ -1,4 +1,4 @@
-const express = require ('express')
+const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const dotenv = require('dotenv')
@@ -9,16 +9,19 @@ dotenv.config({ path: path.join(__dirname, '.env') })
 const routes = require("./routes");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
-app.use(cors({
-  origin: "https://projetoMensagens.netlify.app",
-  methods: ["GET", "POST"]
-}));
+app.use(cors());
 app.use(bodyParser.json());
 
-app.use(routes);
-app.use(express.static(path.join(__dirname, '/public')));
+// Rotas da API
+app.use('/api', routes);
+
+// Servir React build
+app.use(express.static(path.join(__dirname, '../../build')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../build', 'index.html'));
+});
 
 app.listen(PORT, () => {
     console.log(`✅ Servidor rodando em http://localhost:${PORT}`);

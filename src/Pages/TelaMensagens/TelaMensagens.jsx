@@ -12,10 +12,10 @@ export const TelaMensagens = () => {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      const res = await fetch("http://localhost:3001/mensagens");
+      const res = await fetch("/api/mensagens");
       const data = await res.json();
       setMensagens(data);
-    }, 2000); 
+    }, 2000);
 
     return () => clearInterval(interval);
   }, []);
@@ -23,7 +23,7 @@ export const TelaMensagens = () => {
   const enviarMensagem = async (e) => {
     const userID = localStorage.getItem("userID");
     try {
-      const res = await fetch("http://localhost:3001/mensagens", {
+      const res = await fetch("/api/mensagens", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mensagem, userID }),
@@ -62,9 +62,9 @@ export const TelaMensagens = () => {
       >
         <h1 style={{ margin: 0 }}>Tela de mensagens</h1>
         <div style={{ backgroundColor: "white", height: "70vh", width: "60%" }}>
-          <ul style={{listStyle: 'none'}}>
+          <ul style={{ listStyle: "none" }}>
             {mensagens.map((msg) => (
-              <li key={msg.id}>
+              <li key={msg.mensagem_id}>
                 <b>{msg.usuario_nome}</b>: {msg.conteudo_mensagem}
               </li>
             ))}
